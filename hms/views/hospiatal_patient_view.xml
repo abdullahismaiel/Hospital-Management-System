@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+        <record id="patient_tree" model="ir.ui.view">
+            <field name="name">patient.tree</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="email" string="Patient Email"/>
+                    <field name="birth_date"/>
+                                        <field name="age"/>
+
+                    <field name="cr_ratio"/>
+                    <field name="dept_id"/>
+                    <field name="doc_name" string="Doctors Names"/>
+                </tree>
+            </field>
+        </record>
+        <record id="patient_form" model="ir.ui.view">
+            <field name="name">patient.tree</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <form>
+
+                       <header>
+                        <button name="action_state_Undetermined" type="object" string="Undetermined"
+                                class="btn btn-secondary" attrs="{'invisible':[('state','=','Undetermined')]}"/>
+                        <button name="action_state_Good" type="object" string="Good"
+                                class="btn btn-primary" attrs="{'invisible':[('state','=','Good')]}"/>
+                        <button name="action_state_Fair" type="object" string="Fair"
+                                class="btn btn-secondary" attrs="{'invisible':[('state','=','Fair')]}"/>
+                        <button name="action_state_Serious" type="object" string="Serious"
+                                class="btn btn-secondary" attrs="{'invisible':[('state','=','Serious')]}" />
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="Undetermined,Good,Fair,Serious"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="first_name" string="Patient First Name" required="True"/>
+
+                                <field name="last_name" string="Patient Second Name" required="True"/>
+                                <field name="birth_date" string="Patient Birth-Date"/>
+                                <field name="age" string="Patient Age"/>
+                                <field name="email" string="Patient Email"/>
+                                <field name="history" string="Patient History"
+                                       attrs="{'invisible':[('age','&lt;',50)]}"/>
+                                <field name="bcr" string="BCR"/>
+                                <field name="cr_ratio" string="Patient CR Ratio"
+                                       attrs="{'required':[('bcr','!=',False)]}"/>
+                            </group>
+                            <group>
+                                <field name="image" widget="image"/>
+                                <field name="dept_id" string="Department" domain="[('is_opened','=',True)]"/>
+                                <field name="dept_capacity"/>
+                                <field name="doc_ids" string="Doctors" attrs="{'readonly':[('dept_id','=',False)]}"
+                                       widget="many2many_tags" groups="hms.manager_group"/>
+                                <field name="address"/>
+
+                                <field name="log_ids" string="Log History">
+                                    <tree editable="bottom">
+                                        <field name="desc"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="hospital_patient_action" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="hospital_root_menu" name="Hospital"/>
+        <menuitem id="hospital_patient" name="Patient" parent="hospital_root_menu" action="hospital_patient_action"/>
+    </data>
+</odoo>

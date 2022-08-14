@@ -1,0 +1,34 @@
+            <odoo>
+            <data>
+            <record id="crm_patient_view" model="ir.ui.view">
+            <field name="name">CRM Patient</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="attributes">
+<attribute name="required"> True
+
+</attribute>
+                </xpath>
+            <field name="ref" position="after">
+            <field name="related_patient_id"/>
+            </field>
+            </field>
+            </record>
+            <record id="CRM_tree_view" model="ir.ui.view">
+            <field name="name">CRM Patient Tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position="after">
+            <field name="related_patient_id"/>
+                            <field name="website"/>
+
+            </xpath>
+            </field>
+            </record>
+            </data>
+            </odoo>
+
+
+
